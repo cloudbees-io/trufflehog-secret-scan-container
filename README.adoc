@@ -20,7 +20,7 @@ This Action integrates TruffleHog, a secret scanning tool, into the CI/CD pipeli
 
 | `image-tag`
 | string
-| No
+| Yes
 | Tag of the docker image.
 
 | `threshold-very-high`
