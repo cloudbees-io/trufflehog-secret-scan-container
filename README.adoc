@@ -1,0 +1,100 @@
+= TruffleHog Secret Container Scan Action
+
+This Action integrates TruffleHog, a secret scanning tool, into the CI/CD pipeline to detect secrets and sensitive information in the docker image.
+
+== Inputs
+
+[cols="2a,1a,1a,3a",options="header"]
+.Input details
+|===
+
+| Input name
+| Data type
+| Required
+| Description
+
+| `image-location`
+| string
+| Yes
+| Repository location of the docker image.
+
+| `image-tag`
+| string
+| No
+| Tag of the docker image.
+
+| `threshold-very-high`
+| string
+| No
+| The threshold for very high severity. Build will be breaked if vulnerabilities with very high severity exceeds this threshold.
+
+| `threshold-high`
+| string
+| No
+| The threshold for high severity. Build will be breaked if vulnerabilities with high severity exceeds this threshold.
+
+| `threshold-medium`
+| string
+| No
+| The threshold for medium severity. Build will be breaked if vulnerabilities with medium severity exceeds this threshold.
+
+| `threshold-low`
+| string
+| No
+| The threshold for low severity. Build will be breaked if vulnerabilities with low severity exceeds this threshold.
+
+
+|===
+
+== Usage
+
+To use this action in your workflow, add a step that references it. This action would expect authentication to the container registry already being setup therefore should not require the user to pass registry credentials.
+Here is an example of a workflow that uses the "TruffleHog Secret Container Scan Action":
+
+[source,yaml]
+----
+on:
+  push:
+    branches:
+      - main    
+
+jobs:
+  secret-scan:
+    steps:
+      - name: Run TruffleHog Secret Container Scan
+        uses: cloudbees-io/trufflehog-secret-scan-container@v1
+        with:
+          image-location: ${{ vars.IMAGE_LOCATION }}
+          image-tag: ${{ vars.IMAGE_TAG }}
+----
+
+To break the build if found vulnerabilities exceed any of the given thresholds (very high, medium, high, low), threshold action input parameters are used. Note that, except for the "very-high" input parameter, the other parameters are not currently in use.
+
+[source,yaml]
+----
+on:
+  push:
+    branches:
+      - main    
+
+jobs:
+  secret-scan:
+    steps:
+      - name: Run TruffleHog Secret Container Scan
+        uses: cloudbees-io/trufflehog-secret-scan-container@v1
+        with:
+          image-location: ${{ vars.IMAGE_LOCATION }}
+          image-tag: ${{ vars.IMAGE_TAG }}
+          threshold-very-high: 3
+----
+For instance, the above example will break the build if number of very high severity vulnerabilities exceeds 3.
+
+== License
+
+This code is made available under the 
+link:https://opensource.org/license/mit/[MIT license].
+
+== References
+
+* Learn more about link:https://docs.cloudbees.com/docs/cloudbees-saas-platform-actions/latest/[using actions in CloudBees workflows].
+* Learn about link:https://docs.cloudbees.com/docs/cloudbees-saas-platform/latest/[the CloudBees platform].

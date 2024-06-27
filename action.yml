@@ -1,0 +1,49 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: action
+name: TruffleHog Secret Container Scan Action
+inputs:
+  image-location:
+    required: true
+    description: 'The repository location of the image to be scanned.'
+  image-tag:
+    required: true
+    description: 'The tag of the image to be scanned.'
+  threshold-very-high:
+    required: false
+    default: 999
+    description: 'The threshold for very high severity. Build will be breaked if vulnerabilities with very high severity exceeds this threshold.'
+  threshold-high:
+    required: false
+    default: 999
+    description: 'The threshold for high severity. Build will be breaked if vulnerabilities with high severity exceeds this threshold.'
+  threshold-medium:
+    required: false
+    default: 999
+    description: 'The threshold for medium severity. Build will be breaked if vulnerabilities with medium severity exceeds this threshold.'
+  threshold-low:
+    required: false
+    default: 999  
+    description: 'The threshold for low severity. Build will be breaked if vulnerabilities with low severity exceeds this threshold.'
+
+runs:
+  using: composite
+  steps:
+    - id: run-trufflehog-secret-container-scan
+      name: trufflehogcontainer
+      uses: docker://public.ecr.aws/l7o7z1g8/actions/trufflehog-secret-actions:main-cbd21992f44cacc2e9370fa5cba3769774447919
+      shell: sh
+      env:
+        CONFIG_JSON: '{"metaInfo":{"imageLocation":"${{ inputs.image-location }}","imageTag":"${{ inputs.image-tag }}","toolName":"trufflehogcontainer"},"orchestratorInfo":{"assetType":"BINARY","assetIdentifier":"${{ inputs.image-location }}","profileIdentifier":"${{ inputs.image-tag }}"},"metaInformation":{"actor":"NA","commit_id":"NA","tenent_info":"NA","scanner_type":"Container"}}' 
+        THRESHOLD_JSON: '{"veryHigh":${{ inputs.threshold-very-high }},"high":${{ inputs.threshold-high }},"medium":${{ inputs.threshold-medium }},"low":${{ inputs.threshold-low }}}'
+        RUN_ID: ${{ cloudbees.run_id }}
+        STEP_ID: ${{ step.internal.id }}
+        JOB_ID: ${{ job.id }}
+        DNS_URL: ${{ cloudbees.api.url }}
+        JWT_TOKEN: ${{ cloudbees.api.token }}
+      run: |
+        set -x
+        echo "RUN ID: ${{ cloudbees.run_id }}"
+        echo "Job ID: ${{ job.id }}"
+        echo "Step ID: ${{ step.internal.id }}"      
+        cd /app
+        ./trufflehog_secret_scan_app scan -t 'IMAGE' -c "${CONFIG_JSON}" -r "${THRESHOLD_JSON}"
