@@ -5,7 +5,7 @@ Use this action to scan Docker images with TruffleHog, an open-source secret sca
 == Prerequisites
 
 This action requires prior authentication to the container registry, so you must invoke the Docker registry authentication action before invoking the TruffleHog container scan action.
- For more information, refer to xref:credentials:configure-oci-credentials.adoc[The OCI credentials configuration action].
+ For more information, refer to link:https://github.com/cloudbees-io/configure-oci-credentials[The OCI credentials configuration action].
 
 == Inputs
 
