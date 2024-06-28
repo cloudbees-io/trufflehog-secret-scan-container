@@ -33,6 +33,8 @@ This action requires prior authentication to the container registry, so you must
 | No
 | The number threshold of very high severity vulnerabilities at which the build is broken.
 
+|=== 
+
 == Usage examples
 
 In your YAML file, add:
