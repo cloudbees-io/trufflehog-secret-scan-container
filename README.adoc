@@ -48,7 +48,7 @@ In your YAML file, add:
           image-tag: ${{ vars.IMAGE_TAG }}
 ----
 
-In the following example, if there are more than 3 vulnerabilities identified of very high severity, the build is broken.
+In the following example, if there are more than three vulnerabilities of very high severity (`threshold-very-high: 3`) identified, the build is broken.
 
 [source,yaml]
 ----
