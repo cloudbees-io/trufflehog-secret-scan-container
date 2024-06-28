@@ -1,6 +1,6 @@
 = CloudBees action: Scan containers with TruffleHog
 
-This Action integrates TruffleHog, an open-source secret scanning tool, into CI/CD pipelines to detect secrets and sensitive information in Docker images.
+Use this action to scan Docker images with TruffleHog, an open-source secret scanning tool to detect secrets and sensitive information.
 
 == Prerequisites
 
