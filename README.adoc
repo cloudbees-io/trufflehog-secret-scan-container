@@ -1,6 +1,11 @@
-= TruffleHog Secret Container Scan Action
+= CloudBees action: Scan containers with TruffleHog
 
-This Action integrates TruffleHog, a secret scanning tool, into the CI/CD pipeline to detect secrets and sensitive information in the docker image.
+This Action integrates TruffleHog, an open-source secret scanning tool, into CI/CD pipelines to detect secrets and sensitive information in Docker images.
+
+== Prerequisites
+
+This action requires prior authentication to the container registry, so you must invoke the Docker registry authentication action before invoking the TruffleHog container scan action.
+ For more information, refer to xref:credentials:configure-oci-credentials.adoc[The OCI credentials configuration action].
 
 == Inputs
 
@@ -16,78 +21,43 @@ This Action integrates TruffleHog, a secret scanning tool, into the CI/CD pipeli
 | `image-location`
 | string
 | Yes
-| Repository location of the docker image.
+| Repository location of the Docker image.
 
 | `image-tag`
 | string
 | Yes
-| Tag of the docker image.
+| Tag of the Docker image.
 
 | `threshold-very-high`
 | string
 | No
-| The threshold for very high severity. Build will be breaked if vulnerabilities with very high severity exceeds this threshold.
+| The number threshold of very high severity vulnerabilities at which the build is broken.
 
-| `threshold-high`
-| string
-| No
-| The threshold for high severity. Build will be breaked if vulnerabilities with high severity exceeds this threshold.
+== Usage examples
 
-| `threshold-medium`
-| string
-| No
-| The threshold for medium severity. Build will be breaked if vulnerabilities with medium severity exceeds this threshold.
-
-| `threshold-low`
-| string
-| No
-| The threshold for low severity. Build will be breaked if vulnerabilities with low severity exceeds this threshold.
-
-
-|===
-
-== Usage
-
-To use this action in your workflow, add a step that references it. This action would expect authentication to the container registry already being setup therefore should not require the user to pass registry credentials.
-Here is an example of a workflow that uses the "TruffleHog Secret Container Scan Action":
+In your YAML file, add:
 
 [source,yaml]
 ----
-on:
-  push:
-    branches:
-      - main    
-
-jobs:
-  secret-scan:
-    steps:
-      - name: Run TruffleHog Secret Container Scan
+      - name: Run TruffleHog container scan
         uses: cloudbees-io/trufflehog-secret-scan-container@v1
         with:
           image-location: ${{ vars.IMAGE_LOCATION }}
           image-tag: ${{ vars.IMAGE_TAG }}
 ----
 
-To break the build if found vulnerabilities exceed any of the given thresholds (very high, medium, high, low), threshold action input parameters are used. Note that, except for the "very-high" input parameter, the other parameters are not currently in use.
+In the following example, if there are more than 3 vulnerabilities identified of very high severity, the build is broken.
 
 [source,yaml]
 ----
-on:
-  push:
-    branches:
-      - main    
 
-jobs:
-  secret-scan:
-    steps:
-      - name: Run TruffleHog Secret Container Scan
+      - name: Run TruffleHog container scan with threshold
         uses: cloudbees-io/trufflehog-secret-scan-container@v1
         with:
           image-location: ${{ vars.IMAGE_LOCATION }}
           image-tag: ${{ vars.IMAGE_TAG }}
           threshold-very-high: 3
 ----
-For instance, the above example will break the build if number of very high severity vulnerabilities exceeds 3.
 
 == License
 
@@ -96,5 +66,5 @@ link:https://opensource.org/license/mit/[MIT license].
 
 == References
 
-* Learn more about link:https://docs.cloudbees.com/docs/cloudbees-saas-platform-actions/latest/[using actions in CloudBees workflows].
-* Learn about link:https://docs.cloudbees.com/docs/cloudbees-saas-platform/latest/[the CloudBees platform].
+* Learn more about link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/actions[using actions in CloudBees workflows].
+* Learn about link:https://docs.cloudbees.com/docs/cloudbees-platform/latest/[the CloudBees platform].
