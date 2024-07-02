@@ -29,7 +29,7 @@ This action requires prior authentication to the container registry, so you must
 | Tag of the Docker image.
 
 | `threshold-very-high`
-| string
+| integer
 | No
 | The number threshold of very high severity vulnerabilities at which the build is broken.
 
