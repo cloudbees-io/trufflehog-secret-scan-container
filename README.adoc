@@ -5,7 +5,7 @@ Use this action to scan Docker images with TruffleHog, an open-source secret sca
 == Prerequisites
 
 This action requires prior authentication to the container registry, so you must invoke the Docker registry authentication action before invoking the TruffleHog container scan action.
- For more information, refer to link:https://github.com/cloudbees-io/configure-oci-credentials[The OCI credentials configuration action].
+ For more information, refer to link:https://github.com/cloudbees-io/configure-oci-credentials[the OCI credentials configuration action].
 
 == Inputs
 
@@ -41,6 +41,17 @@ In your YAML file, add:
 
 [source,yaml]
 ----
+
+      - name: Check out repo
+        uses: actions/checkout@v1
+
+      - name: Sign in to OCI registry
+        uses: cloudbees-io/configure-oci-credentials@v1
+        with:
+          registry: ${{ vars.OCI_REGISTRY }}
+          username: ${{ secrets.OCI_USERNAME }}
+          password: ${{ secrets.OCI_PASSWORD }}
+
       - name: Run TruffleHog container scan
         uses: cloudbees-io/trufflehog-secret-scan-container@v1
         with:
