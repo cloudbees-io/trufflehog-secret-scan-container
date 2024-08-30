@@ -28,6 +28,11 @@ This action requires prior authentication to the container registry, so you must
 | Yes
 | Tag of the Docker image.
 
+| `helm-package-scan`
+| string
+| No
+| If true, the action will scan the helm package.
+
 | `threshold-very-high`
 | integer
 | No
@@ -69,6 +74,20 @@ In the following example, if there are more than three very high severity vulner
         with:
           image-location: ${{ vars.IMAGE_LOCATION }}
           image-tag: ${{ vars.IMAGE_TAG }}
+          threshold-very-high: 3
+----
+
+In the following example, helm package in the given image location is scanned.
+
+[source,yaml]
+----
+
+      - name: Run TruffleHog container scan
+        uses: cloudbees-io/trufflehog-secret-scan-container@v1
+        with:
+          image-location: ${{ vars.IMAGE_LOCATION }}
+          image-tag: ${{ vars.IMAGE_TAG }}
+          helm-package-scan: true
           threshold-very-high: 3
 ----
 
