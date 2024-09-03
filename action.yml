@@ -8,10 +8,6 @@ inputs:
   image-tag:
     required: true
     description: 'The tag of the image to be scanned.'
-  helm-package-scan:
-    required: false
-    default: false
-    description: 'If true, the action will scan the helm package.'
   threshold-very-high:
     required: false
     default: 999
@@ -34,10 +30,10 @@ runs:
   steps:
     - id: run-trufflehog-secret-container-scan
       name: trufflehogcontainer
-      uses: docker://public.ecr.aws/l7o7z1g8/actions/trufflehog-secret-actions:main-7022522c0527d9d1513aff4caef59bd95dfe4409
+      uses: docker://public.ecr.aws/l7o7z1g8/actions/trufflehog-secret-actions:main-6c0325403da97a6967556efdbf78b7ccdadc2f8c
       shell: sh
       env:
-        CONFIG_JSON: '{"metaInfo":{"imageLocation":"${{ inputs.image-location }}","imageTag":"${{ inputs.image-tag }}","helmPackageScan":"${{ inputs.helm-package-scan }}","toolName":"trufflehogcontainer"},"orchestratorInfo":{"assetType":"BINARY","assetIdentifier":"${{ inputs.image-location }}","profileIdentifier":"${{ inputs.image-tag }}"},"metaInformation":{"actor":"NA","commit_id":"NA","tenent_info":"NA","scanner_type":"Container"}}' 
+        CONFIG_JSON: '{"metaInfo":{"imageLocation":"${{ inputs.image-location }}","imageTag":"${{ inputs.image-tag }}","toolName":"trufflehogcontainer"},"orchestratorInfo":{"assetType":"BINARY","assetIdentifier":"${{ inputs.image-location }}","profileIdentifier":"${{ inputs.image-tag }}"},"metaInformation":{"actor":"NA","commit_id":"NA","tenent_info":"NA","scanner_type":"Container"}}' 
         THRESHOLD_JSON: '{"veryHigh":${{ inputs.threshold-very-high }},"high":${{ inputs.threshold-high }},"medium":${{ inputs.threshold-medium }},"low":${{ inputs.threshold-low }}}'
         RUN_ID: ${{ cloudbees.run_id }}
         STEP_ID: ${{ step.internal.id }}
@@ -48,13 +44,6 @@ runs:
         set -x
         echo "RUN ID: ${{ cloudbees.run_id }}"
         echo "Job ID: ${{ job.id }}"
-        echo "Step ID: ${{ step.internal.id }}"
-
-        if [ "${{ inputs.helm-package-scan }}" = "true" ]; then
-          echo "Pulling Helm chart from given image location..."
-          helm pull oci://${{ inputs.image-location }} --version ${{ inputs.image-tag }} --untardir ${CLOUDBEES_WORKSPACE}/extracted-helm-package --untar
-          echo "Helm chart downloaded and untarred successfully."
-        fi
-              
+        echo "Step ID: ${{ step.internal.id }}"              
         cd /app
         ./trufflehog_secret_scan_app scan -t 'IMAGE' -c "${CONFIG_JSON}" -r "${THRESHOLD_JSON}"
