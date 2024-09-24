@@ -30,7 +30,7 @@ runs:
   steps:
     - id: run-trufflehog-secret-container-scan
       name: trufflehogcontainer
-      uses: docker://public.ecr.aws/l7o7z1g8/actions/trufflehog-secret-actions:main-6c0325403da97a6967556efdbf78b7ccdadc2f8c
+      uses: docker://public.ecr.aws/l7o7z1g8/actions/trufflehog-secret-actions:main-743dd107fa541e3282333b332e17e95e09651456
       shell: sh
       env:
         CONFIG_JSON: '{"metaInfo":{"imageLocation":"${{ inputs.image-location }}","imageTag":"${{ inputs.image-tag }}","toolName":"trufflehogcontainer"},"orchestratorInfo":{"assetType":"BINARY","assetIdentifier":"${{ inputs.image-location }}","profileIdentifier":"${{ inputs.image-tag }}"},"metaInformation":{"actor":"NA","commit_id":"NA","tenent_info":"NA","scanner_type":"Container"}}' 
