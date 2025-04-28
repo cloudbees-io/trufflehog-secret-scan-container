@@ -28,16 +28,16 @@ This action requires prior authentication to the container registry, so you must
 | Yes
 | Tag of the Docker image.
 
+| `threshold-very-high`
+| integer
+| No
+| The number threshold of very high severity vulnerabilities at which the build is broken.
+
 | `only-verified`
 | String
 | No
 | Enables the verified flag to scan only verified secrets.
 The default is `true`.^<<footnote,[1]>>^
-
-| `threshold-very-high`
-| integer
-| No
-| The number threshold of very high severity vulnerabilities at which the build is broken.
 
 |=== 
 
