@@ -29,14 +29,10 @@ This action requires prior authentication to the container registry, so you must
 | Tag of the Docker image.
 
 | `only-verified`
-| string
+| String
 | No
-| Enable verified flag to scan only verified secrets (Default set to true).
-
-Note:  If only-verified is set to true, Trufflelog tool may utilize an external third-party api to verify the secrets detected. 
-Customers concerned about security implications involving third-party api calls should set the only-verified value to false which returns all the secrets without verification and might contain false positives. 
-
-Refer the documentation regarding the credential verification link:https://github.com/trufflesecurity/trufflehog?tab=readme-ov-file#what-is-credential-verification[here]
+| Enables the verified flag to scan only verified secrets.
+The default is `true`.^<<footnote,[1]>>^
 
 | `threshold-very-high`
 | integer
@@ -44,6 +40,15 @@ Refer the documentation regarding the credential verification link:https://githu
 | The number threshold of very high severity vulnerabilities at which the build is broken.
 
 |=== 
+
+[#footnote]
+[IMPORTANT]
+====
+^[1]^ If `only-verified` is set to true, The TruffleHog tool may utilize an external third-party API to verify the secrets detected.
+
+Customers concerned about security implications involving third-party API calls should set the `only-verified` value to false, which returns all the secrets without verification and might contain false positives.
+Refer to the link:https://github.com/trufflesecurity/trufflehog?tab=readme-ov-file#what-is-credential-verification[TruffleHog credential verification documentation] for more information.
+====
 
 == Usage examples
 
