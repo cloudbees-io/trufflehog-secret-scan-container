@@ -46,7 +46,7 @@ The default is `true`.^<<footnote,[1]>>^
 ====
 ^[1]^ If `only-verified` is set to true, The TruffleHog tool may utilize an external third-party API to verify the secrets detected.
 
-Customers concerned about security implications involving third-party API calls should set the `only-verified` value to false, which returns all the secrets without verification and might contain false positives.
+Customers concerned about security implications involving third-party API calls should set the `only-verified` value to false, which returns all the secrets without verification and might include false positives.
 Refer to the link:https://github.com/trufflesecurity/trufflehog?tab=readme-ov-file#what-is-credential-verification[TruffleHog credential verification documentation] for more information.
 ====
 
@@ -87,12 +87,13 @@ In the following example, if there are more than three very high severity vulner
           threshold-very-high: 3
 ----
 
-In the following example, setting only-verified to false
+In the following example, `only-verified` is set to false.
+The returned secrets are not verified and might include false positives.
 
 [source,yaml]
 ----
 
-      - name: Run TruffleHog container scan with threshold
+      - name: Run TruffleHog container scan without verifying
         uses: cloudbees-io/trufflehog-secret-scan-container@v1
         with:
           image-location: ${{ vars.IMAGE_LOCATION }}
