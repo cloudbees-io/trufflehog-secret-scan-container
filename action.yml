@@ -28,6 +28,22 @@ inputs:
     required: false
     default: 999  
     description: 'The threshold for low severity. Build will be breaked if vulnerabilities with low severity exceeds this threshold.'
+outputs:
+  critical-count:
+    description: A string containing the number of Critical security findings discovered during the scan.
+    value: ${{steps.run-trufflehog-secret-container-scan.outputs.critical-count}}
+  very-high-count:
+    description: A string containing the number of Very High security findings discovered during the scan.
+    value: ${{steps.run-trufflehog-secret-container-scan.very-high-count}}
+  high-count:
+    description: A string containing the number of High security findings discovered during the scan.
+    value: ${{steps.run-trufflehog-secret-container-scan.high-count}}
+  medium-count:
+    description: A string containing the number of Medium security findings discovered during the scan.
+    value: ${{steps.run-trufflehog-secret-container-scan.medium-count}}
+  low-count:
+    description: A string containing the number of Low security findings discovered during the scan.
+    value: ${{steps.run-trufflehog-secret-container-scan.low-count}}
 runs:
   using: composite
   steps:
