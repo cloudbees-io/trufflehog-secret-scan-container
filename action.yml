@@ -52,7 +52,7 @@ runs:
   steps:
     - id: run-trufflehog-secret-container-scan
       name: trufflehogcontainer
-      uses: docker://020229604682.dkr.ecr.us-east-1.amazonaws.com/actions/trufflehog-secret-actions:CBP-23372-f0e656b9ff4eaa4260ea8161c69b2b1767ed06f5
+      uses: docker://020229604682.dkr.ecr.us-east-1.amazonaws.com/actions/trufflehog-secret-actions:CBP-23372-5af32769879f14c78e36cef9f8a19e3397f0f906
       shell: sh
       env:
         CONFIG_JSON: '{"metaInfo":{"imageLocation":"${{ inputs.image-location }}","imageTag":"${{ inputs.image-tag }}","onlyVerified":${{ inputs.only-verified }},"toolName":"trufflehogcontainer"},"orchestratorInfo":{"assetType":"BINARY","assetIdentifier":"${{ inputs.image-location }}","profileIdentifier":"${{ inputs.image-tag }}"},"metaInformation":{"actor":"NA","commit_id":"NA","tenent_info":"NA","scanner_type":"Container"}}' 
