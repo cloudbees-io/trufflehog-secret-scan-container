@@ -34,16 +34,19 @@ outputs:
     value: ${{steps.run-trufflehog-secret-container-scan.outputs.critical-count}}
   very-high-count:
     description: A string containing the number of Very High security findings discovered during the scan.
-    value: ${{steps.run-trufflehog-secret-container-scan.very-high-count}}
+    value: ${{steps.run-trufflehog-secret-container-scan.outputs.very-high-count}}
   high-count:
     description: A string containing the number of High security findings discovered during the scan.
-    value: ${{steps.run-trufflehog-secret-container-scan.high-count}}
+    value: ${{steps.run-trufflehog-secret-container-scan.outputs.high-count}}
   medium-count:
     description: A string containing the number of Medium security findings discovered during the scan.
-    value: ${{steps.run-trufflehog-secret-container-scan.medium-count}}
+    value: ${{steps.run-trufflehog-secret-container-scan.outputs.medium-count}}
   low-count:
     description: A string containing the number of Low security findings discovered during the scan.
-    value: ${{steps.run-trufflehog-secret-container-scan.low-count}}
+    value: ${{steps.run-trufflehog-secret-container-scan.outputs.low-count}}
+  scan-status:
+    description: A string containing the status of the scan.
+    value: ${{steps.run-trufflehog-secret-container-scan.outputs.scan-status}}
 runs:
   using: composite
   steps:
