@@ -28,12 +28,31 @@ inputs:
     required: false
     default: 999  
     description: 'The threshold for low severity. Build will be breaked if vulnerabilities with low severity exceeds this threshold.'
+outputs:
+  critical-count:
+    description: A string containing the number of Critical security findings discovered during the scan.
+    value: ${{steps.run-trufflehog-secret-container-scan.outputs.critical-count}}
+  very-high-count:
+    description: A string containing the number of Very High security findings discovered during the scan.
+    value: ${{steps.run-trufflehog-secret-container-scan.outputs.very-high-count}}
+  high-count:
+    description: A string containing the number of High security findings discovered during the scan.
+    value: ${{steps.run-trufflehog-secret-container-scan.outputs.high-count}}
+  medium-count:
+    description: A string containing the number of Medium security findings discovered during the scan.
+    value: ${{steps.run-trufflehog-secret-container-scan.outputs.medium-count}}
+  low-count:
+    description: A string containing the number of Low security findings discovered during the scan.
+    value: ${{steps.run-trufflehog-secret-container-scan.outputs.low-count}}
+  scan-status:
+    description: A string containing the status of the scan.
+    value: ${{steps.run-trufflehog-secret-container-scan.outputs.scan-status}}
 runs:
   using: composite
   steps:
     - id: run-trufflehog-secret-container-scan
       name: trufflehogcontainer
-      uses: docker://public.ecr.aws/l7o7z1g8/actions/trufflehog-secret-actions:main-43c7893a2d6fe08b40c3b345368a17d32f9c7a77
+      uses: docker://public.ecr.aws/l7o7z1g8/actions/trufflehog-secret-actions:main-d06d5788ceb7fb8d171973d53f500a4a47f4516b
       shell: sh
       env:
         CONFIG_JSON: '{"metaInfo":{"imageLocation":"${{ inputs.image-location }}","imageTag":"${{ inputs.image-tag }}","onlyVerified":${{ inputs.only-verified }},"toolName":"trufflehogcontainer"},"orchestratorInfo":{"assetType":"BINARY","assetIdentifier":"${{ inputs.image-location }}","profileIdentifier":"${{ inputs.image-tag }}"},"metaInformation":{"actor":"NA","commit_id":"NA","tenent_info":"NA","scanner_type":"Container"}}' 
