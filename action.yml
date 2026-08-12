@@ -70,6 +70,15 @@ runs:
         set -x
         echo "RUN ID: ${{ cloudbees.run_id }}"
         echo "Job ID: ${{ job.id }}"
-        echo "Step ID: ${{ step.internal.id }}"              
+        echo "Step ID: ${{ step.internal.id }}"
         cd /app
+        # trufflehog --exclude-paths expects a file with newline-separated regexes,
+        # not a path string. Write the comma-separated excludePaths to a temp file
+        # and replace the excludePaths value in CONFIG_JSON with the file path.
+        EXCLUDE_PATHS_FILE=""
+        if [ -n "${{ inputs.exclude-paths }}" ]; then
+          EXCLUDE_PATHS_FILE=$(mktemp /tmp/trufflehog-exclude-XXXXXX.txt)
+          echo "${{ inputs.exclude-paths }}" | tr ',' '\n' > "${EXCLUDE_PATHS_FILE}"
+          CONFIG_JSON=$(echo "${CONFIG_JSON}" | sed "s|\"excludePaths\":\"[^\"]*\"|\"excludePaths\":\"${EXCLUDE_PATHS_FILE}\"|")
+        fi
         ./trufflehog_secret_scan_app scan -t 'IMAGE' -c "${CONFIG_JSON}" -r "${THRESHOLD_JSON}"
