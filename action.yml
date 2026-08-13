@@ -12,10 +12,6 @@ inputs:
     required: false
     default: 'true'
     description: 'Enable verified flag to scan only verified secrets.'
-  exclude-paths:
-    required: false
-    default: ''
-    description: 'Comma-separated list of paths to exclude from the scan.'
   threshold-very-high:
     required: false
     default: 999
@@ -59,7 +55,7 @@ runs:
       uses: docker://public.ecr.aws/l7o7z1g8/actions/trufflehog-secret-actions:main-2142c7708b08112c81056b815a9396c742d72748
       shell: sh
       env:
-        CONFIG_JSON: '{"metaInfo":{"imageLocation":"${{ inputs.image-location }}","imageTag":"${{ inputs.image-tag }}","onlyVerified":${{ inputs.only-verified }},"excludePaths":"${{ inputs.exclude-paths }}","toolName":"trufflehogcontainer"},"orchestratorInfo":{"assetType":"BINARY","assetIdentifier":"${{ inputs.image-location }}","profileIdentifier":"${{ inputs.image-tag }}"},"metaInformation":{"actor":"NA","commit_id":"NA","tenent_info":"NA","scanner_type":"Container"}}' 
+        CONFIG_JSON: '{"metaInfo":{"imageLocation":"${{ inputs.image-location }}","imageTag":"${{ inputs.image-tag }}","onlyVerified":${{ inputs.only-verified }},"toolName":"trufflehogcontainer"},"orchestratorInfo":{"assetType":"BINARY","assetIdentifier":"${{ inputs.image-location }}","profileIdentifier":"${{ inputs.image-tag }}"},"metaInformation":{"actor":"NA","commit_id":"NA","tenent_info":"NA","scanner_type":"Container"}}' 
         THRESHOLD_JSON: '{"veryHigh":${{ inputs.threshold-very-high }},"high":${{ inputs.threshold-high }},"medium":${{ inputs.threshold-medium }},"low":${{ inputs.threshold-low }}}'
         RUN_ID: ${{ cloudbees.run_id }}
         STEP_ID: ${{ step.internal.id }}
